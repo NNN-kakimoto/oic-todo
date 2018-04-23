@@ -80,7 +80,10 @@
             <div class="content">
                 <div class="title m-b-md">
                     体調に不具合出てるので死んでます
-                </div>
+								</div>
+								<div style="font-size:35px;">
+									githubにpush済。
+								</div>
 
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>

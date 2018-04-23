@@ -17,3 +17,13 @@ Route::get('/', function () {
 Route::get('/hoge', function () {
 	return view('hoge');
 });
+Route::get('/tasklist', function () {
+	return view('html',
+		["message" => "testtest",
+			"tasks" => [
+				'Goto Bookstore',
+				'Clean myroom',
+			]
+		]
+	);
+});
