@@ -42,3 +42,9 @@ echo "test<br>";
 	@endfor
 	</tr>
 </table>
+
+<form action="/task" method="POST">
+	<?= csrf_field() ?>
+	<input type="text" name="task_name">
+	<input type="submit" value="タスクの追加">
+</form>

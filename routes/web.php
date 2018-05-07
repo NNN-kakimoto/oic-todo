@@ -27,3 +27,11 @@ Route::get('/tasklist', function () {
 		]
 	);
 });
+Route::post("/task", function(){
+	$taskName = request()->get("task_name");
+	return "hello, {$taskName}.";
+});
+Route::get("/params_test", function(){
+	$title = request()->get("title");
+	return $title;
+});
