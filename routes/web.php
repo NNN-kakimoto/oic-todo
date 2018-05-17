@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/hoge', function () {
-	return view('hoge');
+	return view('html/trip');
 });
 Route::get('/tasklist', function () {
 	return view('html',
