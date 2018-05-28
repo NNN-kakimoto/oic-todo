@@ -11,7 +11,7 @@
 		<article>
 			<ul>
 				@foreach($trips as $trip)
-					<li>{{$trip->name}} : {{$trip->target}}</li>
+					<li><a href="/tripshow?id={{$trip->id}}">{{$trip->name}} : {{$trip->target}}</a></li>
 				@endforeach
 			</ul>
 			<?php // var_dump($tasks); ?>

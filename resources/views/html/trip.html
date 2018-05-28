@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-
+		<script src="../assets/js/jquery-3.2.1.min.js"></script>
 	</head>
 
 	<body>
@@ -10,15 +10,16 @@
 		</header>
 		<article>
 			<h2>TRIP List</h2>
+			<form action="/trip">
+				<?= csrf_field() ?>
+				<input type="text" name="trip_name" placeholder="なまえ">
+				<input type="text" name="trip_target" placeholder="もくてきち">
+				<input type="submit" name="trip_add" value="ついかする">
+			</form>
 			<ul>
 				<li>trip</li>
-				<li>trip</li>
-				<li>trip</li>
-				<li>trip</li>
-				<li>trip</li>
-				<li>trip</li>
-				<p> and more...</p>
 			</ul>
+			<p> and more...</p>
 	</article>
 	</body>
 </html>
