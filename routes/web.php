@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/hoge', function () {
-	return view('html/trip');
+	return view('hoge');
 });
 Route::get('/tasklist', function () {
 	$tasks = DB::select("select i.id, i.name as name, i.status,i.cost, t.name as trip_name from items as i join trips as t on i.trip_id = t.id");
