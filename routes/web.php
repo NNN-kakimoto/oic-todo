@@ -53,7 +53,7 @@ Route::post("/task", function(){
 	}
 	// return var_dump($taskName);
 	DB::insert("insert into items (name, status, cost, trip_id) values(?,?,?,?)", [$taskName, $status, $cost, $tripId]);
-	return redirect("/tasklist");
+	return redirect()->to("/tripshow?id={$tripId}");
 });
 Route::post("/trip", function(){
 	$tripName = request()->get("trip_name");
@@ -69,6 +69,19 @@ Route::get("/tripshow", function(){
 	$items_list = DB::select('select * from items where trip_id = ?', [$tripId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
 	return view("tripshow",[
+		"trip_data" => $trip_data[0],
+		"items_data" => $items_list,
+		"ITEMS_STATUS" => $ITEMS_STATUS
+	]);
+});
+Route::get("/itemshow", function(){
+	$itemId = intval(request()->get("id"));
+	$item_data = DB::select('select i.id as item_id, i.name, t.id as trip_id, i.cost, i.status from items as i join trips as t on i.trip_id = t.id where i.id = ? limit 1', [$itemId]);
+	$trip_data = DB::select('select * from trips where id = ? limit 1', [$item_data[0]->trip_id]);
+	$items_list = DB::select('select * from items where trip_id = ?', [$item_data[0]->trip_id]);
+	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
+	return view("itemshow",[
+		"item_data" => $item_data[0],
 		"trip_data" => $trip_data[0],
 		"items_data" => $items_list,
 		"ITEMS_STATUS" => $ITEMS_STATUS
