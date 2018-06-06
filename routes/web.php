@@ -12,7 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	$trips = DB::select("select * from trips order by id desc");
+	//var_dump($trips);exit;
+	return view("triplist", [
+		"trips" => $trips
+	]);
 });
 Route::get('/hoge', function () {
 	return view('hoge');
@@ -86,6 +90,33 @@ Route::get("/itemshow", function(){
 		"items_data" => $items_list,
 		"ITEMS_STATUS" => $ITEMS_STATUS
 	]);
+});
+
+
+// content delete
+Route::post("/itemupdate", function(){
+	//var_dump($_POST);exit;
+	$itemId = intval(request()->get("id"));
+	$item = DB::select('select * from items where id = ? limit 1', [$itemId]);
+	$delete_flg = intval(request()->get("delete_flg"));
+	//var_dump($item, $delete_flg);exit;
+	if($delete_flg === 1 && !empty($item)){
+		// delete submit かつ 項目存在
+		$tripId = $item[0]->trip_id;
+		$deleted = DB::delete('delete from items where id = ? limit 1', [$itemId]);
+		return redirect()->to("/tripshow?id={$tripId}");
+	}else if($delete_flg === 0 && !empty($item)){
+		// update submit かつ 項目存在
+		//$tripId = $item[0]->trip_id;
+		$new_name = request()->get("item_name");
+		$new_status = intval(request()->get("item_status"));
+		$new_cost = intval(request()->get("item_cost"));
+		$new_cost = $new_cost==NULL? 0: $new_cost;
+		$updated = DB::update('update items set name = ?, status = ?, cost = ? where id = ? limit 1',[$new_name, $new_status, $new_cost, $itemId]);
+		return redirect()->to("/itemshow?id={$itemId}");
+	}else{
+		return redirect("/tasklist");
+	}
 });
 
 Route::get("/params_test", function(){

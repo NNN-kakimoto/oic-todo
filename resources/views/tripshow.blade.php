@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<script src="../assets/js/jquery-3.2.1.min.js"></script>
+		<script src="/js/jquery-3.2.1.min.js"></script>
 	</head>
 	
 	<body>
@@ -19,7 +19,7 @@
 			<h2>TRIP items</h2>
 			<ul>
 				@foreach($items_data as $item)
-					<li><a href="/itemshow?id={{$item->id}}">{{$item->name}} : {{$ITEMS_STATUS[$item->status]}} : {{$item->cost}}</a></li>
+					<li><a href="/itemshow?id={{$item->id}}">{{$item->name}} : {{$ITEMS_STATUS[$item->status]}} : {{$item->cost}}</a>{{-- <a class="delete-btn" id="delete{{$item->id}}">✕</a>--}}</li>
 				@endforeach
 			</ul>
 
@@ -36,4 +36,14 @@
 			<a href="/triplist">もどる</a>
 		</article>
 	</body>
+	<script>
+		$(function(){
+			$('.delete-btn').click(function(){
+				var id = $(this).attr('id');
+				var item_id = id.slice(6,9);
+				console.log(item_id);
+
+			})
+		});
+	</script>
 </html>
