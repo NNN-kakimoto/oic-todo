@@ -21,6 +21,9 @@ Route::get('/', function () {
 Route::get('/hoge', function () {
 	return view('hoge');
 });
+Route::get('/404', function(){
+	return view('404');
+});
 Route::get('/tasklist', function () {
 	$tasks = DB::select("select i.id, i.name as name, i.status,i.cost, t.name as trip_name from items as i join trips as t on i.trip_id = t.id");
 	$trips = DB::select("select id, name from trips");
@@ -72,6 +75,9 @@ Route::get("/tripshow", function(){
 	$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$tripId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
+	if(empty($tripdata)){
+		return redirect("/404");
+	}
 	return view("tripshow",[
 		"trip_data" => $trip_data[0],
 		"items_data" => $items_list,
@@ -81,9 +87,13 @@ Route::get("/tripshow", function(){
 Route::get("/itemshow", function(){
 	$itemId = intval(request()->get("id"));
 	$item_data = DB::select('select i.id as item_id, i.name, t.id as trip_id, i.cost, i.status from items as i join trips as t on i.trip_id = t.id where i.id = ? limit 1', [$itemId]);
+	if(empty($item_data) || empty($trip_data)){
+		return redirect("/404");
+	}
 	$trip_data = DB::select('select * from trips where id = ? limit 1', [$item_data[0]->trip_id]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$item_data[0]->trip_id]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
+	
 	return view("itemshow",[
 		"item_data" => $item_data[0],
 		"trip_data" => $trip_data[0],
