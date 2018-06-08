@@ -12,3 +12,79 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+// reset css
+body{
+	//background-color: #fff;
+}
+a{
+	color: transparent;
+	text-decoration: none;
+	&:hover{
+		text-decoration: none;
+	}
+	&:visited{
+		text-decoration: none;
+	}
+}
+a.link{
+	color: $blue;
+	text-decoration: underline;
+	&:hover{
+		color: $blue;
+	}
+	&:visited{
+		color: $blue;
+	}
+}
+h2{
+	margin-top: 8px;
+	border-bottom: 1px solid $gray;
+}
+
+
+
+//header
+header{
+	height: 50px;
+	background-color: $gray;
+	color: $white;
+	h1{
+		//width: 960px;
+		margin:0 auto;
+		line-height: 50px;
+		a{
+			color: $white;
+			&:hover{
+				color:$white;
+			}
+			&:visited{
+				color: $white;
+			}
+		}
+	}
+}
+
+.main_content{
+	//width:	960px;
+	min-height: calc( 100vh - 50px );
+	margin: 0 auto;
+	background-color: $white;
+	padding: 10px;
+}
+table{
+	.t_slim{
+		text-align: center;
+		padding: 6px 0 6px 0;
+	}
+	td{
+		line-height: 25px;
+	}
+	.t_head{
+		text-align: right;
+		width: 20%;
+	}
+	.item_row_link{
+		cursor: pointer;
+	}
+}

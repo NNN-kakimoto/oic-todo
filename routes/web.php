@@ -15,6 +15,7 @@ Route::get('/', function () {
 	$trips = DB::select("select * from trips order by id desc");
 	//var_dump($trips);exit;
 	return view("triplist", [
+		"title" => "たびいちらん",
 		"trips" => $trips
 	]);
 });
@@ -22,7 +23,8 @@ Route::get('/hoge', function () {
 	return view('hoge');
 });
 Route::get('/404', function(){
-	return view('404');
+	return view('404',
+	["title" => 'ページが存在しません。']);
 });
 Route::get('/tasklist', function () {
 	$tasks = DB::select("select i.id, i.name as name, i.status,i.cost, t.name as trip_name from items as i join trips as t on i.trip_id = t.id");
@@ -41,6 +43,7 @@ Route::get('/triplist', function(){
 	$trips = DB::select("select * from trips order by id desc");
 	//var_dump($trips);exit;
 	return view("triplist", [
+		"title" => 'たびいちらん',
 		"trips" => $trips
 	]);
 });
@@ -75,10 +78,11 @@ Route::get("/tripshow", function(){
 	$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$tripId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
-	if(empty($tripdata)){
+	if(empty($trip_data)){
 		return redirect("/404");
 	}
 	return view("tripshow",[
+		"title" => "たび | ".$trip_data[0]->name,
 		"trip_data" => $trip_data[0],
 		"items_data" => $items_list,
 		"ITEMS_STATUS" => $ITEMS_STATUS
@@ -87,14 +91,15 @@ Route::get("/tripshow", function(){
 Route::get("/itemshow", function(){
 	$itemId = intval(request()->get("id"));
 	$item_data = DB::select('select i.id as item_id, i.name, t.id as trip_id, i.cost, i.status from items as i join trips as t on i.trip_id = t.id where i.id = ? limit 1', [$itemId]);
-	if(empty($item_data) || empty($trip_data)){
+	$trip_data = DB::select('select * from trips where id = ? limit 1', [$item_data[0]->trip_id]);
+	if(empty($item_data[0]) || empty($trip_data[0])){
 		return redirect("/404");
 	}
-	$trip_data = DB::select('select * from trips where id = ? limit 1', [$item_data[0]->trip_id]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$item_data[0]->trip_id]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
 	
 	return view("itemshow",[
+		"title" => $trip_data[0]->name."のにもつ | ".$item_data[0]->name,
 		"item_data" => $item_data[0],
 		"trip_data" => $trip_data[0],
 		"items_data" => $items_list,

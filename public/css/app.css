@@ -10417,7 +10417,82 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-html {
-  color: red;
+a {
+  color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a.link {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+a.link:hover {
+  color: #007bff;
+}
+
+a.link:visited {
+  color: #007bff;
+}
+
+h2 {
+  margin-top: 8px;
+  border-bottom: 1px solid #646464;
+}
+
+header {
+  height: 50px;
+  background-color: #646464;
+  color: #fff;
+}
+
+header h1 {
+  margin: 0 auto;
+  line-height: 50px;
+}
+
+header h1 a {
+  color: #fff;
+}
+
+header h1 a:hover {
+  color: #fff;
+}
+
+header h1 a:visited {
+  color: #fff;
+}
+
+.main_content {
+  min-height: calc( 100vh - 50px);
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 10px;
+}
+
+table .t_slim {
+  text-align: center;
+  padding: 6px 0 6px 0;
+}
+
+table td {
+  line-height: 25px;
+}
+
+table .t_head {
+  text-align: right;
+  width: 20%;
+}
+
+table .item_row_link {
+  cursor: pointer;
 }
 
