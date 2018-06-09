@@ -133,6 +133,17 @@ Route::post("/itemupdate", function(){
 		return redirect("/tasklist");
 	}
 });
+Route::post("/itemstatusupdate", function(){
+	//var_dump($_POST);exit;
+	$itemId = intval(request()->get("id"));
+	$new_status = intval(request()->get("item_status"));
+	$item = DB::select('select * from items where id = ? limit 1', [$itemId]);
+	if(!empty($item)){
+		$tripId = $item[0]->trip_id;
+		$updated = DB::update('update items set status = ? where id = ? limit 1',[$new_status, $itemId]);
+	}
+	return redirect()->to("/tripshow?id={$tripId}#items");
+});
 
 Route::get("/params_test", function(){
 	$title = request()->get("title");
