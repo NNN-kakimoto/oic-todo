@@ -46,8 +46,11 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
-        return parent::render($request, $exception);
-    }
+    public function render($request, Exception $e) {
+			if($this->isHttpException($e)) {
+				return response()->view('404', ["title" => 'ページが存在しません。']);
+			} 
+			return parent::render($request, $e);
+	}
 }
+	
