@@ -95,7 +95,7 @@ Route::get("/itemshow", function(){
 	if(empty($item_data[0]) || empty($trip_data[0])){
 		return redirect("/404");
 	}
-	$items_list = DB::select('select * from items where trip_id = ?', [$item_data[0]->trip_id]);
+	$items_list = DB::select('select * from items where trip_id = ? and id != ?', [$item_data[0]->trip_id, $itemId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
 	
 	return view("itemshow",[
@@ -133,6 +133,27 @@ Route::post("/itemupdate", function(){
 		return redirect("/tasklist");
 	}
 });
+Route::post("/itemdelete", function(){
+	$itemId = intval(request()->get("id"));
+	$item = DB::select('select * from items where id = ? limit 1', [$itemId]);
+	if(!empty($item)){
+		// item削除
+		$tripId = $item[0]->trip_id;
+		$deleted = DB::delete('delete from items where id = ? limit 1', [$itemId]);
+		return redirect()->to("/tripshow?id={$tripId}");
+	}
+});
+Route::post("/tripdelete", function(){
+	$itemId = intval(request()->get("id"));
+	$item = DB::select('select * from trips where id = ? limit 1', [$itemId]);
+	if(!empty($item)){
+		// trip 削除
+		$deleted = DB::delete('delete from trips where id = ? limit 1', [$itemId]);
+		return redirect()->to("/");
+	}
+});
+
+// single column update
 Route::post("/itemstatusupdate", function(){
 	//var_dump($_POST);exit;
 	$itemId = intval(request()->get("id"));

@@ -5,41 +5,77 @@
 	<h2>ITEM details</h2>
 	<form action="/itemupdate" id="item_form" method="POST">
 		<?= csrf_field() ?>
-		<ul>
-			<li class="hover_input_trigger">name :<span class="now_content">{{$item_data->name}}</span>
-				<input type="text" name="item_name" class="hover_input not_changed" id="item_name" value="{{$item_data->name}}"></li>
-			<li class="hover_input_trigger">status :<span class="now_content">{{$ITEMS_STATUS[$item_data->status]}}</span>
-				<select name="item_status" class="hover_inout not_changed" id="item_status">
-					<option value="">--</option>
-					@foreach ($ITEMS_STATUS as $key => $status)
-						<?php $selected = ( $key == $item_data->status)? " selected ": "";?>
-						<option value="{{$key}}"{{$selected}}>{{$status}}</option>
-					@endforeach
-				</select>
-			</li>
-			<li class="hover_input_trigger">cost :<span class="now_content">{{$item_data->cost}}</span>
-				<input type="number" name="item_cost" class="hover_input not_changed" id="item_cost" value="{{$item_data->cost}}"> えん</li>
-		</ul>
+		<table class="table table-bordered">
+			<tr>
+				<td class="t_head">name</td>
+				<td class="hover_input_trigger">
+					<span class="now_content">{{$item_data->name}}</span>
+					<input type="text" name="item_name" class="hover_input not_changed" id="item_name" value="{{$item_data->name}}">
+				</td>
+			</tr>
+			<tr>
+				<td class="t_head">status</td>
+				<td class="hover_input_trigger" >
+					<span class="now_content">{{$ITEMS_STATUS[$item_data->status]}}</span>
+					<select name="item_status" class="hover_inout not_changed" id="item_status">
+						<option value="">--</option>
+						@foreach ($ITEMS_STATUS as $key => $status)
+							<?php $selected = ( $key == $item_data->status)? " selected ": "";?>
+							<option value="{{$key}}"{{$selected}}>{{$status}}</option>
+						@endforeach
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="t_head">cost</td>
+				<td class="hover_input_trigger">
+					<span class="now_content">{{$item_data->cost}}</span>
+					<input type="number" name="item_cost" class="hover_input not_changed" id="item_cost" value="{{$item_data->cost}}"> えん
+				</td>
+			</tr>
+		</table>
 	
 		<input type="hidden" name="id" value="{{$item_data->item_id}}">
 		<input type="hidden" name="delete_flg" value="0" id="delete_flg">
-		<button type="button" name="update" id="update_btn" class="submit_btn" >こうしん</button>
-		<button type="button" name="delete" id="delete_btn" class="submit_btn" >さくじょ</button>	
+		<input  class="btn" type="submit" name="update" id="update_btn" value="こうしん" >
 	</form>
+	<form action="/itemdelete" method="POST">
+		<?= csrf_field() ?>
+		<input type="hidden" name="id" value="{{$item_data->item_id}}">
+		<input class="btn" type="submit" name="delete"value="さくじょ">	
+	</form>	
 
 	<h2>TRIP details</h2>
-	<ul>
-		<li>name :{{$trip_data->name}}</li>
-		<li>target :{{$trip_data->target}}</li>
-		<li>total cost :{{$trip_data->total_cost}}</li>
-	</ul>
+	<table class="table table-bordered">
+		<tr>
+			<td class="t_head">name</td>
+			<td>{{$trip_data->name}}</td>
+		</tr>
+		<tr>
+			<td class="t_head">target</td>
+			<td>{{$trip_data->target}}</td>
+		</tr>
+		<tr>
+			<td class="t_head">total cost</td>
+			<td>{{$trip_data->total_cost}} えん</td>
+		</tr>
+	</table>
 
 	<h2>othser TRIP items</h2>
-	<ul>
+	<table class="table table-bordered table-hover">
+		<tr class="table-active">
+			<th class="t_slim" style="width: 50%;">name</th>
+			<th class="t_slim" style="width: 25%;">status</th>
+			<th class="t_slim" style="width: 25%;">cost</th>
+		</tr>
 		@foreach($items_data as $item)
-			<li>{{$item->name}} : {{$ITEMS_STATUS[$item->status]}} : {{$item->cost}}</li>
+			<tr id="/itemshow?id={{$item->id}}">
+				<td class="item_row_link">{{$item->name}}</td>
+				<td class="item_row_link">{{$ITEMS_STATUS[$item->status]}}</td>
+				<td class="t_head item_row_link">{{$item->cost}} えん</td>
+			</a></tr>
 		@endforeach
-	</ul>
+	</table>
 
 	<a class="link" href="/tripshow?id={{$trip_data->id}}">もどる</a>
 </article>
@@ -47,7 +83,6 @@
 	$(function(){
 		// ページロード時、not_changedクラスを非表示
 		$('.not_changed').hide();
-
 
 		$('.hover_input_trigger').hover(function(){
 			//console.log('hover');
@@ -64,7 +99,8 @@
 		});
 
 		// submitボタンの実装(buttonタグなので)
-		$('.submit_btn').on('click', function(){
+		$('.submit_btn').click( function(){
+			console.log('aa');
 			if($(this).attr('id') == 'delete_btn'){
 				// 削除フラグを1に
 				$("#delete_flg").val(1);
@@ -72,6 +108,14 @@
 			}
 			$('#item_form').submit();
 		});
+
+		$('.item_row_link').on('click', function(){
+			// テーブルの行クリックで飛ばす
+			var link_target = $(this).parent().attr('id');
+			//console.log(link_target);
+			window.location = link_target;
+		});
+
 
 		function isChange(){ // 変更があるか調べ、あればnot_changedクラスを外して表示
 			$('.not_changed').change(function(){

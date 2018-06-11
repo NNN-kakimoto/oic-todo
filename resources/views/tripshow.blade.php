@@ -17,6 +17,11 @@
 			<td>{{$trip_data->total_cost}} えん</td>
 		</tr>
 	</table>
+	<form action="/tripdelete" method="POST">
+		<?= csrf_field() ?>
+		<input type="hidden" name="id" value="{{$trip_data->id}}" >
+		<input type="submit" name="delte" value="さくじょ" id="delete-btn" class="btn delete-btn">
+	</form>
 
 	<h2 id="items">TRIP items</h2>
 	<table class="table table-bordered table-hover">
@@ -30,6 +35,7 @@
 				<td class="item_row_link">{{$item->name}}</td>
 				<td class="hover_input_trigger">
 					<form action="/itemstatusupdate" method="POST">
+						<?= csrf_field() ?>
 						<span class="now_content">{{$ITEMS_STATUS[$item->status]}}</span>
 						<select name="item_status" class="hover_input not_changed" id="item_status">
 								<option value="">--</option>
