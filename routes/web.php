@@ -139,18 +139,26 @@ Route::post("/itemdelete", function(){
 	if(!empty($item)){
 		// item削除
 		$tripId = $item[0]->trip_id;
+		if($item[0]->cost != 0){
+			// itemのコストが0以外のとき、tripのtotal_costもUPDATE
+			$trip_data = DB::select('SELECT * from trips WHERE id = ? limit 1',[$tripId]);
+			$new_total_cost = $trip_data[0]->total_cost - $item[0]->cost;
+			$update = DB::update('UPDATE trips SET total_cost = ? WHERE id = ? LIMIT 1', [$new_total_cost, $tripId]);
+		}
 		$deleted = DB::delete('delete from items where id = ? limit 1', [$itemId]);
 		return redirect()->to("/tripshow?id={$tripId}");
 	}
 });
 Route::post("/tripdelete", function(){
-	$itemId = intval(request()->get("id"));
-	$item = DB::select('select * from trips where id = ? limit 1', [$itemId]);
-	if(!empty($item)){
+	$tripId = intval(request()->get("id"));
+	$trip = DB::select('select * from trips where id = ? limit 1', [$tripId]);
+	if(!empty($trip)){
 		// trip 削除
-		$deleted = DB::delete('delete from trips where id = ? limit 1', [$itemId]);
-		return redirect()->to("/");
+		$deleted = DB::delete('delete from trips where id = ? limit 1', [$tripId]);
+		// 紐づくアイテムを削除する
+		$itemdelete = DB::delete('delete from items where trip_id = ?', [$tripId]);
 	}
+	return redirect("/triplist");
 });
 
 // single column update

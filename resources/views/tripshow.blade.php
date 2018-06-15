@@ -53,14 +53,21 @@
 	</table>
 
 	<h2>TRIP item add</h2>
-	<form action="/task" method="POST">
+	<form action="/task" method="POST"  class="form-horizontal">
 		<?= csrf_field() ?>
-		<input type="text" name="task_name" placeholder="なまえ">
-		<input type="number" name="cost" placeholder="よさん" value="">えん{{--input type number なので'やばたにえん'とかは入れれない--}}
-		<input type="hidden" name="trip_id" value="{{$trip_data->id}}">
-		<input type="text" readonly value="{{$trip_data->name}}">
-		</select>
-		<input type="submit" value="あいてむついか">
+		<div class="form-group">
+			<div class="col-sm-12 form-inline">
+				<input type="text" name="task_name" class="form-control"  placeholder="なまえ">
+				<input type="number" name="cost"  class="form-control" placeholder="よさん" value="">えん{{--input type number なので'やばたにえん'とかは入れれない--}}
+			</div>
+			<input type="hidden" name="trip_id" value="{{$trip_data->id}}">
+			<div class="col-sm-12">
+				<input type="text" class="form-control" readonly value="{{$trip_data->name}}">
+			</div>
+			<div class="col-sm-12">
+				<input type="submit" class="btn" value="あいてむついか">
+			</div>
+		</div>
 	</form>
 	<a class="link" href="/triplist">もどる</a>
 </article>

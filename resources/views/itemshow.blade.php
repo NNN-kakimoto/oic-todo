@@ -38,11 +38,12 @@
 		<input type="hidden" name="id" value="{{$item_data->item_id}}">
 		<input type="hidden" name="delete_flg" value="0" id="delete_flg">
 		<input  class="btn" type="submit" name="update" id="update_btn" value="こうしん" >
+		<button type="button" class="btn" id="delete_btn">さくじょ</button>
 	</form>
-	<form action="/itemdelete" method="POST">
+	<form action="/itemdelete" method="POST" id="delete_form">
 		<?= csrf_field() ?>
 		<input type="hidden" name="id" value="{{$item_data->item_id}}">
-		<input class="btn" type="submit" name="delete"value="さくじょ">	
+		<input class="btn" type="hidden" name="delete"value="さくじょ">	
 	</form>	
 
 	<h2>TRIP details</h2>
@@ -84,9 +85,14 @@
 		// ページロード時、not_changedクラスを非表示
 		$('.not_changed').hide();
 
+		// delete form submit
+		$('#delete_btn').click(function(){
+			$('#delete_form').submit();
+		})
+
 		$('.hover_input_trigger').hover(function(){
 			//console.log('hover');
-			$(this).children().show();
+			$(this).children().show().css('height','19px');
 			$(this).children('.now_content').hide();
 		}, 
 		function(){

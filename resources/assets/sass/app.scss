@@ -41,6 +41,12 @@ h2{
 	margin-top: 8px;
 	border-bottom: 1px solid $gray;
 }
+.btn{
+	&:hover{
+		background-color: $white;
+		border-color: $gray;
+	}
+}
 
 
 
@@ -77,8 +83,11 @@ table{
 		text-align: center;
 		padding: 6px 0 6px 0;
 	}
+	tr{
+		min-height: 30px;
+	}
 	td{
-		line-height: 25px;
+		//line-height: 25px;
 	}
 	.t_head{
 		text-align: right;
@@ -86,5 +95,14 @@ table{
 	}
 	.item_row_link{
 		cursor: pointer;
+	}
+	.hover-input{
+		display: inline-block;
+		height: 19px !important;
+	}
+}
+.form-group{
+	div{
+		padding-top:5px;
 	}
 }

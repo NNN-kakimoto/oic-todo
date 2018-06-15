@@ -10448,6 +10448,11 @@ h2 {
   border-bottom: 1px solid #646464;
 }
 
+.btn:hover {
+  background-color: #fff;
+  border-color: #646464;
+}
+
 header {
   height: 50px;
   background-color: #646464;
@@ -10483,8 +10488,8 @@ table .t_slim {
   padding: 6px 0 6px 0;
 }
 
-table td {
-  line-height: 25px;
+table tr {
+  min-height: 30px;
 }
 
 table .t_head {
@@ -10494,5 +10499,14 @@ table .t_head {
 
 table .item_row_link {
   cursor: pointer;
+}
+
+table .hover-input {
+  display: inline-block;
+  height: 19px !important;
+}
+
+.form-group div {
+  padding-top: 5px;
 }
 

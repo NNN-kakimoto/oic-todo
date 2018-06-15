@@ -18,11 +18,16 @@
 		@endforeach
 	</table>
 	
-	<form action="/trip" method="POST">
+	<h2>TRIP add</h2>
+	<form action="/trip" method="POST"  class="form-horizontal">
 		<?= csrf_field() ?>
-		<input type="text" name="trip_name" placeholder="なまえ">
-		<input type="text" name="trip_target" placeholder="もくてきち">
-		<input type="submit" name="trip_add" value="ついかする">
+		<div class="form-group">
+			<div class="col-sm-12 form-inline">
+				<input type="text" name="trip_name"  class="form-control"  placeholder="なまえ">
+				<input type="text" name="trip_target" class="form-control"  placeholder="もくてきち">
+				<input type="submit" class="btn" name="trip_add" value="ついかする">
+			</div>
+		</div>
 	</form>
 </article>
 <script>
