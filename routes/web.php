@@ -185,8 +185,3 @@ Route::post("/itemstatusupdate", function(){
 	}
 	return redirect()->to("/tripshow?id={$tripId}#items");
 });
-
-Route::get("/params_test", function(){
-	$title = request()->get("title");
-	return $title;
-});
