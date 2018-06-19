@@ -10,7 +10,7 @@
 				<td class="t_head">name</td>
 				<td class="hover_input_trigger">
 					<span class="now_content">{{$item_data->name}}</span>
-					<input type="text" name="item_name" class="hover_input not_changed" id="item_name" value="{{$item_data->name}}">
+					<input type="text" name="item_name" class="hover_input not_changed form-control" id="item_name" value="{{$item_data->name}}">
 				</td>
 			</tr>
 			<tr>
@@ -88,7 +88,7 @@
 		// delete form submit
 		$('#delete_btn').click(function(){
 			$('#delete_form').submit();
-		})
+		});
 
 		$('.hover_input_trigger').hover(function(){
 			//console.log('hover');

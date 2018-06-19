@@ -3,24 +3,38 @@
 @section('content')
 <article class="col-sm-8 main_content">
 	<h2>TRIP details</h2>
-	<table class="table table-bordered">
-		<tr>
-			<td class="t_head">name</td>
-			<td>{{$trip_data->name}}</td>
-		</tr>
-		<tr>
-			<td class="t_head">target</td>
-			<td>{{$trip_data->target}}</td>
-		</tr>
-		<tr>
-			<td class="t_head">total cost</td>
-			<td>{{$trip_data->total_cost}} えん</td>
-		</tr>
-	</table>
+	<form action="/tripupdate" method="POST">
+		<?= csrf_field() ?>
+		<table class="table table-bordered">
+			<tr>
+				<td class="t_head">name</td>
+				<td class="hover_input_trigger">
+					<span class="now_content">{{$trip_data->name}}</span>
+					<input type="text" name="trip_name" class="hover_input not_changed form-control" id="item_name" value="{{$trip_data->name}}">
+				</td>
+			</tr>
+			<tr>
+				<td class="t_head">target</td>
+				<td class="hover_input_trigger">
+					<span class="now_content">{{$trip_data->target}}</span>
+					<input type="text" name="trip_target" class="hover_input not_changed form-control" id="item_name" value="{{$trip_data->target}}">
+					</td>
+			</tr>
+			<tr>
+				<td class="t_head">total cost</td>
+				<td class="hober_disable_input">
+					<span class="">{{$trip_data->total_cost}}</span>えん<span class="disable_text">※total costはにもつのよさんによって変動するので、変更できません。</span>
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" name="trip_id" value="{{$trip_data->id}}" >
+		<input type="submit" name="update" value="こうしん" id="update-btn" class="btn update-btn">
+		<button type="button" class="btn" id="delete_btn">さくじょ</button>
+	</form>
 	<form action="/tripdelete" method="POST">
 		<?= csrf_field() ?>
 		<input type="hidden" name="id" value="{{$trip_data->id}}" >
-		<input type="submit" name="delte" value="さくじょ" id="delete-btn" class="btn delete-btn">
+		<input type="hidden" name="delte" value="さくじょ" id="delete-btn" class="btn delete-btn">
 	</form>
 
 	<h2 id="items">TRIP items</h2>
@@ -76,6 +90,7 @@
 <script>
 	$(function(){
 		$('.not_changed').hide();
+		$('.disable_text').hide();
 		$('.item_row_link').on('click', function(){
 			// テーブルの行クリックで飛ばす
 			var link_target = $(this).parent().attr('id');
@@ -83,11 +98,24 @@
 			window.location = link_target;
 		});
 
+		// delete form submit
+		$('#delete_btn').click(function(){
+			$('#delete_form').submit();
+		});
+
+		$('.hober_disable_input').hover(function(){
+			$('.disable_text').show();
+		},
+		function(){
+			$('.disable_text').hide();
+		});
+
 
 		$('.hover_input_trigger').hover(function(){
 			//console.log('hover');
-			$(this).find('.hover_input').show();
+			$(this).find('.hover_input').show().css('height','19px');
 			$(this).find('.now_content').hide();
+			isChange();
 		}, 
 		function(){
 			$(this).find('.not_changed').hide();
@@ -106,10 +134,10 @@
 		});
 
 		function isChange(){ // 変更があるか調べ、あればnot_changedクラスを外して表示
+			console.log("test");
 			$('.not_changed').change(function(){
 				$(this).removeClass('not_changed').show();
 				$(this).siblings('.now_content').removeClass('.now_content').hide();
-
 				//console.log($(this).val());
 			});
 		}

@@ -100,6 +100,10 @@ table{
 		display: inline-block;
 		height: 19px !important;
 	}
+	.disable_text{
+		font-size: 10px;
+		color: $red;
+	}
 }
 .form-group{
 	div{

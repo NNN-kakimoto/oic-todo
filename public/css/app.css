@@ -10506,6 +10506,11 @@ table .hover-input {
   height: 19px !important;
 }
 
+table .disable_text {
+  font-size: 10px;
+  color: #dc3545;
+}
+
 .form-group div {
   padding-top: 5px;
 }
