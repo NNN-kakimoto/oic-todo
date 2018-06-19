@@ -19,9 +19,6 @@ Route::get('/', function () {
 		"trips" => $trips
 	]);
 });
-Route::get('/hoge', function () {
-	return view('hoge');
-});
 Route::get('/404', function(){
 	return view('404',
 	["title" => 'ページが存在しません。']);
@@ -133,6 +130,21 @@ Route::post("/itemupdate", function(){
 		return redirect("/tasklist");
 	}
 });
+
+Route::post("/tripupdate", function(){
+	$tripId = intval(request()->get("trip_id"));
+	$trip_data = DB::select("SELECT * from trips WHERE id = ? limit 1", [$tripId]);
+	//var_dump($trip_data); exit;
+	if(!empty($trip_data[0])){
+		$new_name = request()->get("trip_name");
+		$new_target = request()->get("trip_target");
+		$update = DB::update('UPDATE trips SET name = ?, target = ? WHERE id = ? limit 1', [$new_name, $new_target, $tripId]);
+		return redirect()->to("/tripshow?id={$tripId}");
+	}else{
+		redirect("/404");
+	}
+});
+
 Route::post("/itemdelete", function(){
 	$itemId = intval(request()->get("id"));
 	$item = DB::select('select * from items where id = ? limit 1', [$itemId]);
