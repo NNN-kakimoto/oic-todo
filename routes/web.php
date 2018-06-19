@@ -75,8 +75,13 @@ Route::get("/tripshow", function(){
 	$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$tripId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
+	$new_total = DB::select('SELECT sum(cost) AS total FROM items WHERE trip_id = ?', [$trip_data[0]->id]);
 	if(empty($trip_data)){
 		return redirect("/404");
+	}
+	if($new_total[0]->total != $trip_data[0]->total_cost){
+		$t_update = DB::update('UPDATE trips SET total_cost = ? WHERE id = ? limit 1', [$new_total[0]->total, $trip_data[0]->id]);
+		$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);
 	}
 	return view("tripshow",[
 		"title" => "たび | ".$trip_data[0]->name,
@@ -125,6 +130,12 @@ Route::post("/itemupdate", function(){
 		$new_cost = intval(request()->get("item_cost"));
 		$new_cost = $new_cost==NULL? 0: $new_cost;
 		$updated = DB::update('update items set name = ?, status = ?, cost = ? where id = ? limit 1',[$new_name, $new_status, $new_cost, $itemId]);
+		if($new_cost != $item[0]->cost){
+			// cost	が変更されていれば親のtrip->total_costをアップデート
+			$new_total = DB::select('SELECT sum(cost) AS total FROM items WHERE trip_id = ?', [$item[0]->trip_id]);
+			//var_dump($new_total);exit;
+			$t_update = DB::update('UPDATE trips SET total_cost = ? WHERE id = ? limit 1', [$new_total[0]->total, $item[0]->trip_id]);
+		}
 		return redirect()->to("/itemshow?id={$itemId}");
 	}else{
 		return redirect("/tasklist");
