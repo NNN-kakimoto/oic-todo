@@ -75,10 +75,11 @@ Route::get("/tripshow", function(){
 	$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);
 	$items_list = DB::select('select * from items where trip_id = ?', [$tripId]);
 	$ITEMS_STATUS = Config::get('const.ITEMS_STATUS'); 
-	$new_total = DB::select('SELECT sum(cost) AS total FROM items WHERE trip_id = ?', [$trip_data[0]->id]);
 	if(empty($trip_data)){
 		return redirect("/404");
 	}
+	$new_total = DB::select('SELECT sum(cost) AS total FROM items WHERE trip_id = ?', [$trip_data[0]->id]);
+	
 	if($new_total[0]->total != $trip_data[0]->total_cost){
 		$t_update = DB::update('UPDATE trips SET total_cost = ? WHERE id = ? limit 1', [$new_total[0]->total, $trip_data[0]->id]);
 		$trip_data = DB::select('select * from trips where id = ? limit 1', [$tripId]);

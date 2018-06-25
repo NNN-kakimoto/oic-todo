@@ -31,7 +31,7 @@
 		<input type="submit" name="update" value="こうしん" id="update-btn" class="btn update-btn">
 		<button type="button" class="btn" id="delete_btn">さくじょ</button>
 	</form>
-	<form action="/tripdelete" method="POST">
+	<form id="delete_form" action="/tripdelete" method="POST">
 		<?= csrf_field() ?>
 		<input type="hidden" name="id" value="{{$trip_data->id}}" >
 		<input type="hidden" name="delte" value="さくじょ" id="delete-btn" class="btn delete-btn">
